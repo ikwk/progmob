@@ -1,6 +1,7 @@
 package com.example.skpapp.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,7 +22,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.skpapp.AuthActivity;
 import com.example.skpapp.Constant;
+import com.example.skpapp.HomeActivity;
 import com.example.skpapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -67,9 +70,9 @@ public class SignInFragment extends Fragment {
         });
 
         btnSignIn.setOnClickListener(v->{
-//            if (validate()){
+            if (validate()){
                 login();
-//            }
+            }
         });
 
         txtNim.addTextChangedListener(new TextWatcher() {
@@ -111,19 +114,19 @@ public class SignInFragment extends Fragment {
         });
     }
 
-//    private boolean validate() {
-//        if (txtNim.getText().toString().isEmpty()){
-//            layoutNim.setErrorEnabled(true);
-//            layoutNim.setError("NIM Is Required");
-//            return false;
-//        }
-//        if (txtPassword.getText().toString().length()<8){
-//            layoutPassword.setErrorEnabled(true);
-//            layoutPassword.setError("Password minimal 8 karakter");
-//            return false;
-//        }
-//        return true;
-//    }
+    private boolean validate() {
+        if (txtNim.getText().toString().isEmpty()){
+            layoutNim.setErrorEnabled(true);
+            layoutNim.setError("NIM Is Required");
+            return false;
+        }
+        if (txtPassword.getText().toString().length()<8){
+            layoutPassword.setErrorEnabled(true);
+            layoutPassword.setError("Password minimal 8 karakter");
+            return false;
+        }
+        return true;
+    }
 
     private void login(){
         dialog.setMessage("Logging In");
@@ -141,16 +144,18 @@ public class SignInFragment extends Fragment {
                     editor.putString("nim",user.getString("nim"));
                     editor.putString("lastname",user.getString("lastname"));
                     editor.putString("photo",user.getString("photo"));
+                    editor.putBoolean("isLoggedIn", true);
                     editor.apply();
-                    dialog.dismiss();
-                    // kalo sukses login maka akan muncul login sukses dngan toast
+                    // kalo sukses login lanjutt
+                    startActivity(new Intent(((AuthActivity)getContext(), HomeActivity.class)));
+                    ((AuthActivity) getContext()).finish();
                     Toast.makeText(getContext(), "Login Success", Toast.LENGTH_LONG).show();
 
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                dialog.dismiss();
             }
+            dialog.dismiss();
         }, error -> {
             //error kalo koneksi gagal
             error.printStackTrace();

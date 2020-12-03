@@ -1,6 +1,7 @@
 package com.example.skpapp.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,8 +23,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.skpapp.AuthActivity;
 import com.example.skpapp.Constant;
+import com.example.skpapp.HomeActivity;
 import com.example.skpapp.R;
+import com.example.skpapp.UserInfoActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -193,8 +197,11 @@ public class SignUpFragment extends Fragment {
                     editor.putString("nim",user.getString("nim"));
                     editor.putString("lastname",user.getString("lastname"));
                     editor.putString("photo",user.getString("photo"));
+                    editor.putBoolean("isLoggedIn", true);
                     editor.apply();
-                    // kalo sukses login maka akan muncul login sukses dngan toast
+                    // kalo sukses login lanjutt
+                    startActivity(new Intent(((AuthActivity)getContext(), UserInfoActivity.class)));
+                    ((AuthActivity) getContext()).finish();
                     Toast.makeText(getContext(), "Register Success", Toast.LENGTH_LONG).show();
 
                 }
