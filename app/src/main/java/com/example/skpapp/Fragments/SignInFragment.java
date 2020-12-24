@@ -147,7 +147,7 @@ public class SignInFragment extends Fragment {
                     editor.putBoolean("isLoggedIn", true);
                     editor.apply();
                     // kalo sukses login lanjutt
-                    startActivity(new Intent(((AuthActivity)getContext(), HomeActivity.class)));
+                    startActivity(new Intent(((AuthActivity)getContext()), HomeActivity.class));
                     ((AuthActivity) getContext()).finish();
                     Toast.makeText(getContext(), "Login Success", Toast.LENGTH_LONG).show();
 

@@ -200,7 +200,7 @@ public class SignUpFragment extends Fragment {
                     editor.putBoolean("isLoggedIn", true);
                     editor.apply();
                     // kalo sukses login lanjutt
-                    startActivity(new Intent(((AuthActivity)getContext(), UserInfoActivity.class)));
+                    startActivity(new Intent(((AuthActivity)getContext()), UserInfoActivity.class));
                     ((AuthActivity) getContext()).finish();
                     Toast.makeText(getContext(), "Register Success", Toast.LENGTH_LONG).show();
 
