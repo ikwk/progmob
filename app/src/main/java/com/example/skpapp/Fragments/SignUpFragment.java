@@ -9,8 +9,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.skpapp.AuthActivity;
@@ -31,19 +36,24 @@ import com.example.skpapp.UserInfoActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment implements Spinner.OnItemSelectedListener{
     private View view;
     private TextInputLayout layoutNim, layoutPassword, layoutConfirm, layoutEmail;
     private TextInputEditText txtNim, txtPassword, txtConfirm, txtEmail;
     private TextView txtSignIn;
     private Button btnSignUp;
     private ProgressDialog dialog;
+    private Spinner spinnerProdi;
+    ArrayList<HashMap<String, String>> list_data;
+    private ArrayList<String> prodiArray;
 
     public SignUpFragment(){}
 
@@ -65,8 +75,15 @@ public class SignUpFragment extends Fragment {
         txtNim = view.findViewById(R.id.txtNimSignUp);
         txtEmail = view.findViewById(R.id.txtEmailSignUp);
         btnSignUp = view.findViewById(R.id.btnSignUp);
+        //untk spinner
+        spinnerProdi = view.findViewById(R.id.spinnerProdi);
+        // ---
         dialog = new ProgressDialog(getContext());
         dialog.setCancelable(false);
+
+        prodiArray = new ArrayList<String>();
+
+        spinnerProdi.setOnItemSelectedListener(this);
 
         txtSignIn.setOnClickListener(v->{
             //ganti fragment
@@ -78,6 +95,8 @@ public class SignUpFragment extends Fragment {
                 register();
             }
         });
+
+        getData();
 
         txtNim.addTextChangedListener(new TextWatcher() {
             @Override
@@ -156,6 +175,40 @@ public class SignUpFragment extends Fragment {
         });
     }
 
+  private void getData(){
+      list_data = new ArrayList<HashMap<String, String>>();
+      StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.SPINNER_PRODI,
+              new Response.Listener<String>() {
+                  @Override
+                  public void onResponse(String response) {
+                      try {
+                          JSONObject jsonObject = new JSONObject(response);
+                          JSONArray jsonArray = jsonObject.getJSONArray("prodi");
+                          for (int a = 0; a < jsonArray.length(); a ++){
+                              JSONObject json = jsonArray.getJSONObject(a);
+                              HashMap<String, String> map  = new HashMap<String, String>();
+                              map.put("nama_prodi", json.getString("nama_prodi"));
+//                              list_data.add(map);
+                              prodiArray.add(json.getString("nama_prodi"));
+                          }
+                          spinnerProdi.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, prodiArray));
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                  }
+              },
+              new Response.ErrorListener() {
+                  @Override
+                  public void onErrorResponse(VolleyError error) {
+                      //error handler
+
+                  }
+              });
+
+      // Add the request to the RequestQueue.
+      RequestQueue request =  Volley.newRequestQueue(getContext());
+      request.add(stringRequest);
+  }
 
 
     private boolean validate() {
@@ -195,11 +248,12 @@ public class SignUpFragment extends Fragment {
                     editor.putString("token",object.getString("token"));
                     editor.putString("name",user.getString("name"));
                     editor.putString("nim",user.getString("nim"));
+                    editor.putString("program_studi", user.getString("program_studi"));
                     editor.putString("lastname",user.getString("lastname"));
                     editor.putString("photo",user.getString("photo"));
                     editor.putBoolean("isLoggedIn", true);
                     editor.apply();
-                    // kalo sukses login lanjutt
+                    // kalo sukses signup lanjutt
                     startActivity(new Intent(((AuthActivity)getContext()), UserInfoActivity.class));
                     ((AuthActivity) getContext()).finish();
                     Toast.makeText(getContext(), "Register Success", Toast.LENGTH_LONG).show();
@@ -225,6 +279,16 @@ public class SignUpFragment extends Fragment {
         };
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(request);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
 

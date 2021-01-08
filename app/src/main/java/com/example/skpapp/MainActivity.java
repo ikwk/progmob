@@ -8,12 +8,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class MainActivity extends AppCompatActivity {
+    public static String fcm_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fcm_token = FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+
+
 
         // untuk mempause app 1,5 detik
         Handler handler = new Handler();
@@ -33,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
         },1500);
     }
+
 
     private void isFirstTime() {
         //cek jika aplikasi run pertama kali

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.skpapp.Adapters.ViewPagerAdapter;
+import com.example.skpapp.AdaptersOld.ViewPagerAdapter;
 
 public class OnBoardActivity extends AppCompatActivity {
 
@@ -64,11 +64,11 @@ public class OnBoardActivity extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8266"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(getResources().getColor(R.color.black));
+            dots[i].setTextColor(getResources().getColor(R.color.colorBlack));
             dotsLayout.addView(dots[i]);
         }
         if (dots.length>0){
-            dots[position].setTextColor(getResources().getColor(R.color.white));
+            dots[position].setTextColor(getResources().getColor(R.color.colorWhite));
         }
     }
 

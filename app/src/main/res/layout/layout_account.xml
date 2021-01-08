@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/btn_round"
+        android:text="Log Out"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"
+        android:id="@+id/item_logout"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_height="40dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,15 +34,7 @@
         android:clickable="false"
         android:focusable="false">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingBottom="30dp"
-            android:clipToPadding="false"
-            android:id="@+id/recycler2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10pt"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
+
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="match_parent"
@@ -55,18 +60,6 @@
                 android:outlineSpotShadowColor="@android:color/transparent"/>
 
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/ic_add_black_24dp"
-            app:layout_anchor="@id/bottom_app"
-            app:rippleColor="@color/colorWhite"
-            app:tint="@color/colorWhite" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

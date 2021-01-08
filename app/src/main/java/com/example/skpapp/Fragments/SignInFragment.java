@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.skpapp.AuthActivity;
 import com.example.skpapp.Constant;
 import com.example.skpapp.HomeActivity;
+import com.example.skpapp.MainActivity;
 import com.example.skpapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,6 +43,7 @@ public class SignInFragment extends Fragment {
     private TextView txtSignUp;
     private Button btnSignIn;
     private ProgressDialog dialog;
+    private String fcm;
 
 
     public SignInFragment(){}
@@ -55,6 +57,7 @@ public class SignInFragment extends Fragment {
     }
 
     private void init() {
+        fcm = MainActivity.fcm_token;
         layoutPassword = view.findViewById(R.id.txtLayoutPasswordSignIn);
         layoutNim = view.findViewById(R.id.txtLayoutNimSignIn);
         txtPassword = view.findViewById(R.id.txtPasswordSignIn);
@@ -166,6 +169,7 @@ public class SignInFragment extends Fragment {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("nim", txtNim.getText().toString().trim()); //trim berguna untuk menghilangkan spasi di awal dan akhir
                 map.put("password", txtPassword.getText().toString());
+                map.put("fcm_token", fcm);
                 return map;
             }
         };
